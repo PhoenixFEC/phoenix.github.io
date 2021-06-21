@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+        }
+        .main-frame {
+            flex: auto;
+            overflow: hidden;
+        }
+        .side-bar {
+            width: 120px;
+            background-color: #cfcfcf;
+        }
+        .side-bar .paper-list {
+            padding: 12px;
+        }
+        .paper-list li {
+            outline: none;
+            list-style: none;
+            border-radius: 5px;
+            border: 1px solid #cdcdcd;
+            background-color: #fff;
+            padding: 1px;
+            margin-bottom: 12px;
+        }
+        .paper-list li > img {
+            width: 100%;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .room {
+            width: 800px;
+            height: 800px;
+            margin: 0 auto;
+            border: none;
+        }
+
+        .pers {
+            perspective: 250px;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            perspective-origin: center;
+            transform-style: preserve-3d;
+        }
+
+        .wall {
+            display: block;
+            position: absolute;
+            width: 800px;
+            height: 600px;
+            border: none;
+            line-height: 100px;
+            font-family: sans-serif;
+            font-size: 60px;
+            color: white;
+            text-align: center;
+            text-indent: -300%;
+            overflow: hidden;
+        }
+
+        /* Define each wall based on direction */
+        .front {
+            /* background: rgba(0, 0, 0, 0.3); */
+            transform: translateZ(300px);
+        }
+
+        .back {
+            background: url(./paper-03.jpeg) center center repeat;
+            background-size: cover;
+            transform: rotateY(180deg) translateZ(300px);
+        }
+
+        .right {
+            background: url(./paper-01.jpeg) center center repeat;
+            transform: rotateY(90deg) translateZ(400px);
+        }
+
+        .left {
+            background: url(./paper-01.jpeg) center center repeat;
+            transform: rotateY(-90deg) translateZ(400px);
+        }
+
+        .top {
+            background: rgb(233, 233, 233);
+            transform: rotateX(90deg) translateZ(300px);
+        }
+
+        .bottom {
+            background: url(./floor.jpeg) center center repeat;
+            transform: rotateX(-90deg) translateZ(300px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-frame">
+            <div class="room">
+                <div class="cube pers">
+                    <div class="wall front">1</div>
+                    <div id="wallRight" class="wall right">3</div>
+                    <div id="wallLeft" class="wall left">4</div>
+                    <div id="wallBack" class="wall back">2</div>
+                    <div id="wallTop" class="wall top">5</div>
+                    <div id="wallBottom" class="wall bottom">6</div>
+                </div>
+            </div>
+        </div>
+        <div class="side-bar">
+            <ul class="paper-list">
+                <li><img src="./paper-00.jpeg" alt=""></li>
+                <li><img src="./paper-01.jpeg" alt=""></li>
+                <li><img src="./paper-04.jpg" alt=""></li>
+                <li><img src="./paper-05.jpeg" alt=""></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var domWallList = document.querySelectorAll('.wall');
+        var domPaperList = document.querySelectorAll('.paper-list > li');
+        var tmp = {};
+
+        // 记录当前要操作的墙体
+        for(var iw = 0; iw < domWallList.length; iw++) {
+            domWallList[iw].onclick = function() {
+                tmp.wallName = this.getAttribute('id');
+            }
+        }
+        
+        // 选墙纸
+        for(var ip = 0; ip < domPaperList.length; ip++) {
+            domPaperList[ip].onclick = function(e) {
+                if (!tmp.wallName) return;
+                var curPaper = this.firstChild.getAttribute('src');
+                document.querySelector('#' + tmp.wallName).style.backgroundImage = 'url('+ curPaper +')';
+            }
+        }
+    </script>
+</body>
+</html>
